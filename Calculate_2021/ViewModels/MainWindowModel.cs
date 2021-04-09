@@ -447,7 +447,7 @@ namespace Calculate_2021.ViewModels
                     }
                     catch
                     {
-
+                        //
                     }
                 }
                 // Если CE, то очищаем дисплей, переменные и историю
