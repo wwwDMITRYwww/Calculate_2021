@@ -1,0 +1,482 @@
+﻿<Window x:Class="Calculate_2021.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:Calculate_2021.ViewModels"
+        xmlns:cmd="clr-namespace:Calculate_2021.Infrastructure.Commands"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        
+        xmlns:local="clr-namespace:Calculate_2021"
+        
+        Title="Калькулятор 2021"
+        WindowState="Maximized"
+        Background="LightGray"
+        Height="450" 
+        Width="800">
+
+    <Window.DataContext>
+        <vm:MainWindowModel/>
+    </Window.DataContext>
+
+    <Grid x:Name="MainWindowApplication">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="17*"/>
+            <RowDefinition Height="38*"/>
+            <RowDefinition Height="54*"/>
+            <RowDefinition Height="54*"/>
+            <RowDefinition Height="54*"/>
+            <RowDefinition Height="54*"/>
+            <RowDefinition Height="54*"/>
+            <RowDefinition Height="54*"/>
+            <RowDefinition Height="54*"/>
+        </Grid.RowDefinitions>
+
+        <Grid x:Name="History"
+              Grid.RowSpan="9"
+              Grid.Column="4"
+              Margin="1,0,0,0"
+              Background="LightGray">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="ClearHistory"
+                   Grid.Row="1"
+                   Grid.Column="1"
+                   Width="60"
+                   Height="60"
+                   BorderThickness="0"
+                   FontSize="32"
+                   FontWeight="Normal"
+                   Background="LightGray"
+                   Content="C">
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="PreviewMouseDown">
+                        <i:InvokeCommandAction Command="{Binding Operation_Clear_History}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+
+            <ListBox x:Name="HistoryMenager"
+                     Grid.Row="0"
+                     Grid.ColumnSpan="2"
+                     Background="LightGray"
+                     BorderThickness="0"
+                     FontSize="32"
+                     HorizontalContentAlignment="Left"
+                     ItemsSource="{Binding ShowHistory, UpdateSourceTrigger=PropertyChanged}"/>
+        </Grid>
+
+        <TextBlock x:Name="Display"
+                   Grid.RowSpan="3"
+                   Margin="0,-13,0,0"
+                   VerticalAlignment="Stretch"
+                   HorizontalAlignment="Stretch"
+                   FontSize="150"
+                   FontWeight="Normal"
+                   TextTrimming="None"
+                   Text="{Binding Display, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="4"/>
+
+        <Button x:Name="BTN_00"
+                Grid.Row="3"
+                Grid.Column="0"
+                FontSize="32"
+                Margin="1,1,1,1"
+                BorderThickness="0"
+                Content="%">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseDown">
+                    <i:InvokeCommandAction Command="{Binding Operation_Percent}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+
+        <Button x:Name="BTN_01"
+                Grid.Row="3"
+                Grid.Column="1"
+                FontSize="32"
+                Margin="1,1,1,1"
+                BorderThickness="0"
+                Content="CE">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseDown">
+                    <i:InvokeCommandAction Command="{Binding Operation_CE}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+
+        <Button x:Name="BTN_02"
+                Grid.Row="3"
+                Grid.Column="2"
+                FontSize="32"
+                Margin="1,1,1,1"
+                BorderThickness="0"
+                Content="C">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseDown">
+                    <i:InvokeCommandAction Command="{Binding Operation_C}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+
+        <Button x:Name="BTN_03"
+                Grid.Row="3"
+                Grid.Column="3"
+                FontSize="32"
+                Margin="1,1,1,1"
+                BorderThickness="0"
+                Content="&lt;=">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseDown">
+                    <i:InvokeCommandAction Command="{Binding Operation_DEL}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+
+        <Button x:Name="BTN_04"
+                Grid.Row="4"
+                Grid.Column="0"
+                FontSize="32"
+                Margin="1,1,1,1"
+                BorderThickness="0"
+                Content="1/x">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseDown">
+                    <i:InvokeCommandAction Command="{Binding Operation_One_Divided_By_X}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+
+        <Button x:Name="BTN_05"
+                Grid.Row="4"
+                Grid.Column="1"
+                FontSize="32"
+                Margin="1,1,1,1"
+                BorderThickness="0"
+                Content="x^2">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseDown">
+                    <i:InvokeCommandAction Command="{Binding Operation_To_The_Power_Of_X}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+
+        <Button x:Name="BTN_06"
+                Grid.Row="4"
+                Grid.Column="2"
+                FontSize="32"
+                Margin="1,1,1,1"
+                BorderThickness="0"
+                Content="2√x">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseDown">
+                    <i:InvokeCommandAction Command="{Binding Operation_Two_Roots_Of_X}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+
+        <Button x:Name="BTN_07"
+                Grid.Row="4"
+                Grid.Column="3"
+                FontSize="42"
+                Margin="1,1,1,1"
+                BorderThickness="0"
+                Content="&#247;">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseDown">
+                    <i:InvokeCommandAction Command="{Binding Operation_Devide}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+
+        <Button x:Name="BTN_08"
+                Grid.Row="5"
+                Grid.Column="0"
+                FontSize="36"
+                Margin="1,1,1,1"
+                BorderThickness="0"
+                Background="White"
+                FontWeight="Bold"
+                Content="7">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseDown">
+                    <i:InvokeCommandAction Command="{Binding Num_7}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+
+        <Button x:Name="BTN_09"
+                Grid.Row="5"
+                Grid.Column="1"
+                FontSize="36"
+                Margin="1,1,1,1"
+                BorderThickness="0"
+                Background="White"
+                FontWeight="Bold"
+                Content="8">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseDown">
+                    <i:InvokeCommandAction Command="{Binding Num_8}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+
+        <Button x:Name="BTN_10"
+                Grid.Row="5"
+                Grid.Column="2"
+                FontSize="36"
+                Margin="1,1,1,1"
+                BorderThickness="0"
+                Background="White"
+                FontWeight="Bold"
+                Content="9">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseDown">
+                    <i:InvokeCommandAction Command="{Binding Num_9}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+
+        <Button x:Name="BTN_11"
+                Grid.Row="5"
+                Grid.Column="3"
+                FontSize="42"
+                Margin="1,1,1,1"
+                BorderThickness="0"
+                Content="&#215;">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseDown">
+                    <i:InvokeCommandAction Command="{Binding Operation_Multiply}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+
+        <Button x:Name="BTN_12"
+                Grid.Row="6"
+                Grid.Column="0"
+                FontSize="36"
+                Margin="1,1,1,1"
+                BorderThickness="0"
+                Background="White"
+                FontWeight="Bold"
+                Content="4">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseDown">
+                    <i:InvokeCommandAction Command="{Binding Num_4}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+
+        <Button x:Name="BTN_13"
+                Grid.Row="6"
+                Grid.Column="1"
+                FontSize="36"
+                Margin="1,1,1,1"
+                BorderThickness="0"
+                Background="White"
+                FontWeight="Bold"
+                Content="5">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseDown">
+                    <i:InvokeCommandAction Command="{Binding Num_5}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+
+        <Button x:Name="BTN_14"
+                Grid.Row="6"
+                Grid.Column="2"
+                FontSize="36"
+                Margin="1,1,1,1"
+                BorderThickness="0"
+                Background="White"
+                FontWeight="Bold"
+                Content="6">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseDown">
+                    <i:InvokeCommandAction Command="{Binding Num_6}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+
+        <Button x:Name="BTN_15"
+                Grid.Row="6"
+                Grid.Column="3"
+                FontSize="42"
+                Margin="1,1,1,1"
+                BorderThickness="0"
+                Content="-">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseDown">
+                    <i:InvokeCommandAction Command="{Binding Operation_Minus}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+
+        <Button x:Name="BTN_16"
+                Grid.Row="7"
+                Grid.Column="0"
+                FontSize="36"
+                Margin="1,1,1,1"
+                BorderThickness="0"
+                Background="White"
+                FontWeight="Bold"
+                Content="1">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseDown">
+                    <i:InvokeCommandAction Command="{Binding Num_1}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+
+        <Button x:Name="BTN_17"
+                Grid.Row="7"
+                Grid.Column="1"
+                FontSize="36"
+                Margin="1,1,1,1"
+                BorderThickness="0"
+                Background="White"
+                FontWeight="Bold"
+                Content="2">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseDown">
+                    <i:InvokeCommandAction Command="{Binding Num_2}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+
+        <Button x:Name="BTN_18"
+                Grid.Row="7"
+                Grid.Column="2"
+                FontSize="36"
+                Margin="1,1,1,1"
+                BorderThickness="0"
+                Background="White"
+                FontWeight="Bold"
+                Content="3">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseDown">
+                    <i:InvokeCommandAction Command="{Binding Num_3}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+
+        <Button x:Name="BTN_19"
+                Grid.Row="7"
+                Grid.Column="3"
+                FontSize="42"
+                Margin="1,1,1,1"
+                BorderThickness="0"
+                Content="+">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseDown">
+                    <i:InvokeCommandAction Command="{Binding Operation_Plus}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+
+        <Button x:Name="BTN_20"
+                Grid.Row="8"
+                Grid.Column="0"
+                FontSize="36"
+                Margin="1,1,1,1"
+                BorderThickness="0"
+                Background="White"
+                FontWeight="Bold"
+                Content="+/-">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseDown">
+                    <i:InvokeCommandAction Command="{Binding Operation_Sing_Change}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+
+        <Button x:Name="BTN_21"
+                Grid.Row="8"
+                Grid.Column="1"
+                FontSize="36"
+                Margin="1,1,1,1"
+                BorderThickness="0"
+                Background="White"
+                FontWeight="Bold"
+                Content="0">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseDown">
+                    <i:InvokeCommandAction Command="{Binding Num_0}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+
+        <Button x:Name="BTN_22"
+                Grid.Row="8"
+                Grid.Column="2"
+                FontSize="36"
+                Margin="1,1,1,1"
+                BorderThickness="0"
+                Background="White"
+                FontWeight="Bold"
+                Content=",">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseDown">
+                    <i:InvokeCommandAction Command="{Binding Operation_Floating_Point}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+
+        <Button x:Name="BTN_23"
+                Grid.Row="8"
+                Grid.Column="3"
+                FontSize="42"
+                Margin="1,1,1,1"
+                BorderThickness="0"
+                Background="DarkOrange"
+                Content="=">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseDown">
+                    <i:InvokeCommandAction Command="{Binding Operation_Answer}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+    </Grid>
+</Window>
